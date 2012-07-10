@@ -1,0 +1,300 @@
+/* reset styles */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* main styles */
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font: 100% 'Arial', sans-serif;
+    color: #666;
+    background-color: #eee;
+}
+
+div#main {
+}
+
+div#left-column {
+    width: 189px;
+    float: left;
+    font-size: 90%;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+div#left-column ul {
+    padding-left: 20px;
+}
+
+div#left-column ul li {
+    list-style-image: url("bullet.png");
+    padding: 5px;
+    cursor: pointer;
+}
+
+#left-column a
+{
+    text-decoration: none;
+    color: #666;
+    font-size: 14px;
+}
+
+div#left-column a strong {
+    font-weight: bolder;
+}
+
+div#left-column a:hover, div#left-column li:hover
+{
+    background-color: #f6f6f6;
+}
+
+div#left-column a.current-page
+{
+    font-weight: bold;
+}
+
+div#left-column a:hover, div#left-column li:hover {
+    background-color: #f6f6f6;
+}
+
+div#right-column {
+    float: left;
+}
+
+img.bullet {
+    padding-bottom: 3px;
+    padding-right: 6px;
+}
+
+ul {
+    list-style-type: none;
+    line-height: 1.3;
+}
+
+h1 {
+    font-size: 130%;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 1px #fff;
+    color: #666;
+}
+
+h2 {
+    font-size: 110%;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 1px #fff;
+    color: #999;
+}
+
+p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+code {
+    font: 85% "Droid Sans Mono", "Consolas", "Courier", "Courier New", monospace;
+    background-color: #f6f6f6;
+}
+
+form#terminal-form {
+    border-left: 1px solid #d9d9d9;
+    padding: 20px;
+    overflow: auto;
+    cursor: text;
+}
+
+div#terminal {
+    border: none;
+    outline: none;
+    overflow-x: hidden;
+    font: 85% "Droid Sans Mono", "Consolas", "Courier", "Courier New", monospace;
+}
+
+div#prompt {
+    float: left;
+    font: 85% "Droid Sans Mono", "Consolas", "Courier", "Courier New", monospace;
+    display: none;
+}
+
+textarea#terminal-input {
+    width: 500px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    display: block;
+    font: 85% "Droid Sans Mono", "Consolas", "Courier", "Courier New", monospace;
+    resize: none;
+    overflow: hidden;
+}
+
+div.float-clear {
+    clear: left;
+}
+
+span.strong {
+    font-weight: bold;
+}
+
+/* color scheme */
+
+span.color-scheme-message {
+}
+
+span.color-scheme-error {
+}
+
+span.color-scheme-prompt {
+}
+
+select#color-scheme-picker {
+    width: 189px;
+}
+
+/* for plotting */
+
+plot {
+    
+}
+
+svg .hrule line, svg .vrule line {
+  shape-rendering: crispEdges;
+}
+
+svg .hrule2 line, svg .vrule2 line {
+  shape-rendering: crispEdges;
+}
+
+svg .line {
+  fill: none;
+  stroke-width: 1.5px;
+}
+
+svg text {
+}
+
+/* for Internet Explorer */
+a img {
+    border: none;
+}
+
+/* images */
+img {
+    display: block;
+    max-width: 70%;
+}
+
+/* buttons */
+.button {
+    background: #555;
+    color: #fff;
+    padding: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.button:hover {
+    cursor: pointer;
+}
+
+/* adjacency matrix */
+svg {
+    cursor: default;
+}
+
+.background {
+    fill: #eee;
+}
+
+line {
+    stroke: #fff;
+}
+
+text.active {
+    fill: red;
+}
+
+svg {
+    font: sans-serif;
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+sup, sub {
+    line-height: 0;
+}
+
+q:before,
+blockquote:before {
+    content: "â€œ";
+}
+
+q:after,
+blockquote:after {
+    content: "â€";
+}
+
+blockquote:before {
+    position: absolute;
+    left: 2em;
+}
+
+blockquote:after {
+    position: absolute;
+}

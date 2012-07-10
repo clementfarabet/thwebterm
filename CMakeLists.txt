@@ -1,0 +1,7 @@
+
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8 FATAL_ERROR)
+CMAKE_POLICY(VERSION 2.8)
+FIND_PACKAGE(Torch REQUIRED)
+
+FILE(COPY "." DESTINATION "/usr/local/share/torch/lua/torchjs")
+FILE(COPY "torch-raw" DESTINATION "/usr/local/bin/")
