@@ -10,6 +10,7 @@ import 'torch'
 import 'image'
 import 'gnuplot'
 import 'webterm'
+import 'paths'
 
 print '[kernel started]'
 
