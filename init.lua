@@ -42,9 +42,10 @@ if not sys.execute('which node'):find('node') then
    print('     - node.js (http://nodejs.org/)')
    print('     - node package: express')
    print('     - node package: stripcolorcodes')
+   print('     - node package: ejs')
    print('  + once node.js is installed, extra packages can be installed')
    print('    easily with npm:')
-   print('     - npm install express stripcolorcodes')
+   print('     - npm install express stripcolorcodes ejs')
    os.exit()
 end
 
