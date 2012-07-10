@@ -29,7 +29,7 @@ var torch = {
     instances : {},
     newinstance : function(user) {
         // fork new instance:
-        var torchexe = child.spawn(__dirname+'/torch-raw',[],{cwd:torch.cwd});
+        var torchexe = child.spawn(__dirname+'/thkernel',[],{cwd:torch.cwd});
 
         // configure Torch's stdout to store all the output:
         var stdout = [], stdoutidx = 0;

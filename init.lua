@@ -23,7 +23,7 @@
 -- 
 ----------------------------------------------------------------------
 -- description:
---     torchjs - a JS frontend for Torch.
+--     webterm - a JS frontend for Torch.
 ----------------------------------------------------------------------
 
 require 'os'
@@ -31,33 +31,44 @@ require 'io'
 require 'sys'
 require 'paths'
 
-torchjs = {}
+webterm = {}
 
 ----------------------------------------------------------------------
--- File/Line
+-- Server Root
 ----------------------------------------------------------------------
-local function getenv(exec)
-   local dbg = debug.getinfo(3 + (exec or 0))
-   local source_path = dbg.source:gsub('@','')
-   local source_line = dbg.currentline
-   return source_path,source_line
-end
+webterm.root = torch.packageLuaPath('webterm')
 
 ----------------------------------------------------------------------
 -- Server
 ----------------------------------------------------------------------
-function torchjs.server(port)
-   local serverpath = paths.dirname(getenv(),nil)
+function webterm.server(port)
    local currentpath = paths.cwd()
    port = port or '8080'
    if sys.OS == 'macos' then
       os.execute('sleep 1 && open http://localhost:' .. port .. '/ &')
    end
-   os.execute('cd ' .. serverpath .. '; '
+   os.execute('cd ' .. webterm.root .. '; '
               .. 'node server.js ' .. port .. ' ' .. currentpath)
 end
 
 ----------------------------------------------------------------------
--- Run!
+-- Run Server (only if in bare environment)
 ----------------------------------------------------------------------
-torchjs.server()
+if not _kernel_ then
+   webterm.server()
+end
+
+----------------------------------------------------------------------
+-- General Inliner
+----------------------------------------------------------------------
+function webterm.show(data)
+   if torch.typename(data):find('torch.*Tensor') and (data:dim() == 2 or data:dim() == 3) then
+      local file = os.tmpname() .. '.jpg'
+      local fullpath = webterm.root..file
+      os.execute('mkdir -p ' .. paths.dirname(fullpath))
+      image.save(fullpath, data)
+      print('<img src="'..file..'" />')
+   else
+      print('<webterm> cannot inline this kind of data')
+   end
+end

@@ -64,10 +64,10 @@ function create_layout() {
           <code>help()</code></br> \
           <code>help(func)</code></br> \
           <code>?func</code></br> \
-        <p>Plotting:</p> \
+        <p>Visualization:</p> \
           <code>show(image)</code></br> \
+          <code>display(image)</code></br> \
           <code>plot(vector)</code></br> \
-          <code>bar(vector)</code></br> \
     '
     )
 
