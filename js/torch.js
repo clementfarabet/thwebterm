@@ -64,6 +64,7 @@ function create_layout() {
           <code>help()</code></br> \
           <code>help(func)</code></br> \
           <code>?func</code></br> \
+          <code>who()</code></br> \
         <p>Visualization:</p> \
           <code>show(image)</code></br> \
           <code>display(image)</code></br> \
