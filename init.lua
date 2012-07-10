@@ -90,6 +90,21 @@ function webterm.plot(...)
 end
 
 ----------------------------------------------------------------------
+-- Hist Inliner
+----------------------------------------------------------------------
+function webterm.hist(...)
+   local file = os.tmpname() .. '.jpg'
+   local fullpath = webterm.root..file
+   os.execute('mkdir -p ' .. paths.dirname(fullpath))
+   gnuplot.pngfigure(fullpath)
+   gnuplot.hist(...)
+   gnuplot.plotflush()
+   sys.sleep(0.5)
+   webterm.show(file)
+end
+
+
+----------------------------------------------------------------------
 -- Image Inliner
 ----------------------------------------------------------------------
 function webterm.display(...)
