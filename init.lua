@@ -36,7 +36,7 @@ webterm = {}
 ----------------------------------------------------------------------
 -- Dependencies
 ----------------------------------------------------------------------
-if not os.execute('which node'):find('node') then
+if not sys.execute('which node'):find('node') then
    print('<webterm> could not find node: webterm requires node.js')
    print('  + please install:')
    print('     - node.js (http://nodejs.org/)')
