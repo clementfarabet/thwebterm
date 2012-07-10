@@ -62,13 +62,62 @@ end
 -- General Inliner
 ----------------------------------------------------------------------
 function webterm.show(data)
-   if torch.typename(data):find('torch.*Tensor') and (data:dim() == 2 or data:dim() == 3) then
+   if torch.typename(data) and torch.typename(data):find('torch.*Tensor') and (data:dim() == 2 or data:dim() == 3) then
       local file = os.tmpname() .. '.jpg'
       local fullpath = webterm.root..file
       os.execute('mkdir -p ' .. paths.dirname(fullpath))
       image.save(fullpath, data)
       print('<img src="'..file..'" />')
+   elseif type(data) == 'string' then
+      print('<img src="'..data..'" />')
    else
       print('<webterm> cannot inline this kind of data')
    end
+end
+
+----------------------------------------------------------------------
+-- Plot Inliner
+----------------------------------------------------------------------
+function webterm.plot(...)
+   local file = os.tmpname() .. '.jpg'
+   local fullpath = webterm.root..file
+   os.execute('mkdir -p ' .. paths.dirname(fullpath))
+   gnuplot.pngfigure(fullpath)
+   gnuplot.plot(...)
+   gnuplot.plotflush()
+   sys.sleep(0.5)
+   webterm.show(file)
+end
+
+----------------------------------------------------------------------
+-- Image Inliner
+----------------------------------------------------------------------
+function webterm.display(...)
+      -- usage
+   local _, input, zoom, min, max, legend, w, ox, oy, scaleeach, gui, offscreen, padding, symm, nrow, saturate = dok.unpack(
+      {...},
+      'image.display',
+      'displays a single image, with optional saturation/zoom',
+      {arg='image', type='torch.Tensor | table', help='image (HxW or KxHxW or Kx3xHxW or list)', req=true},
+      {arg='zoom', type='number', help='display zoom', default=1},
+      {arg='min', type='number', help='lower-bound for range'},
+      {arg='max', type='number', help='upper-bound for range'},
+      {arg='legend', type='string', help='legend', default='image.display'},
+      {arg='win', type='qt window', help='window descriptor'},
+      {arg='x', type='number', help='x offset (only if win is given)', default=0},
+      {arg='y', type='number', help='y offset (only if win is given)', default=0},
+      {arg='scaleeach', type='boolean', help='individual scaling for list of images', default=false},
+      {arg='gui', type='boolean', help='if on, user can zoom in/out (turn off for faster display)',
+       default=true},
+      {arg='offscreen', type='boolean', help='offscreen rendering (to generate images)',
+       default=false},
+      {arg='padding', type='number', help='number of padding pixels between images', default=0},
+      {arg='symmetric',type='boolean',help='if on, images will be displayed using a symmetric dynamic range, useful for drawing filters', default=false},
+      {arg='nrow',type='number',help='number of images per row', default=6},
+      {arg='saturate', type='boolean', help='saturate (useful when min/max are lower than actual min/max', default=true}
+   )
+   offscreen = true
+   local win = image.display(input, zoom, min, max, legend, w, ox, oy, scaleeach, gui, offscreen, padding, symm, nrow, saturate)
+   local img = win:image():toTensor()
+   webterm.show(img)
 end

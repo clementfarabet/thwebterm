@@ -66,9 +66,9 @@ function create_layout() {
           <code>?func</code></br> \
           <code>who()</code></br> \
         <p>Visualization:</p> \
-          <code>show(image)</code></br> \
           <code>display(image)</code></br> \
           <code>plot(vector)</code></br> \
+          <code>hist(vector)</code></br> \
     '
     )
 
