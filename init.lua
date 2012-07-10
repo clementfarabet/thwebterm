@@ -34,6 +34,21 @@ require 'paths'
 webterm = {}
 
 ----------------------------------------------------------------------
+-- Dependencies
+----------------------------------------------------------------------
+if not os.execute('which node'):find('node') then
+   print('<webterm> could not find node: webterm requires node.js')
+   print('  + please install:')
+   print('     - node.js (http://nodejs.org/)')
+   print('     - node package: express')
+   print('     - node package: stripcolorcodes')
+   print('  + once node.js is installed, extra packages can be installed')
+   print('    easily with npm:')
+   print('     - npm install express stripcolorcodes')
+   os.exit()
+end
+
+----------------------------------------------------------------------
 -- Server Root
 ----------------------------------------------------------------------
 webterm.root = torch.packageLuaPath('webterm')
