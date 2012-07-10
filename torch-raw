@@ -18,6 +18,12 @@ local function traceback (message)
   return tb(message, 2)
 end
 
+local iowrite = io.write
+io.write = function(w)
+  iowrite(w)
+  io.flush()
+end
+
 while true do
    io.flush()
    local line = io.read('*line')
