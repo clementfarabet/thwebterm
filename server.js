@@ -22,7 +22,6 @@ function text2html(txt) {
 
 // configure Torch
 var torch = {
-    bin : '/usr/local/bin/torch',
     tmp : '/tmp/',
     user : 't7',
     port : process.argv[2] || 8080,
@@ -30,7 +29,7 @@ var torch = {
     instances : {},
     newinstance : function(user) {
         // fork new instance:
-        var torchexe = child.spawn('torch-raw',[],{cwd:torch.cwd});
+        var torchexe = child.spawn(__dirname+'/torch-raw',[],{cwd:torch.cwd});
 
         // configure Torch's stdout to store all the output:
         var stdout = [], stdoutidx = 0;
