@@ -50,6 +50,7 @@ function create_layout() {
             <li><a href="http://www.torch.ch/manual/index" target="_blank">Documentation</a></li> \
             <li><a href="https://github.com/andresy/torch" target="_blank">Github</a></li> \
             <li><a href="https://github.com/andresy/torch/issues" target="_blank">Issues</a></li> \
+            <li><a href="http://groups.google.com/group/torch7" target="_blank">Google Group</a></li> \
         </ul> \
         <h2>Tutorials</h2> \
         <ul> \
@@ -137,7 +138,7 @@ var color_schemes = [
         plot_rect_stroke_color: "#FFFFFF",
     }],
     ["Light", {
-        background_color: "#f8f8f8",
+        background_color: "#ffffff",
         text_color: "#444444",
         message_color: "#0000aa",
         error_color: "#ff0000",

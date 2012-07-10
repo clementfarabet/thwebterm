@@ -101,7 +101,9 @@ function webterm.plot(...)
    gnuplot.pngfigure(fullpath)
    gnuplot.plot(...)
    gnuplot.plotflush()
-   sys.sleep(0.5)
+   while not paths.filep(fullpath) do
+      sys.sleep(0.1)
+   end
    webterm.show(file)
 end
 
