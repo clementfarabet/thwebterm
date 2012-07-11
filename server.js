@@ -91,6 +91,7 @@ app.post('/', function(req, res) {
     // process request
     var msg = req.body.msg;
     var cmd = req.body.cmd;
+    var input = req.body.input;
     var args = req.query;
 
     // get username
@@ -138,6 +139,12 @@ app.post('/', function(req, res) {
 
         // sending results
         res.send({msg:'eval_input', user:'['+user+']', output:''});
+
+    } else if (msg == 'completion') {
+
+        // completion request
+        print('==> stdin: ' + input);
+        res.send({msg:'null'});
 
     }
 });

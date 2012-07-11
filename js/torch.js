@@ -221,6 +221,7 @@ var MSG_INPUT_POLL              = 'poll';
 var MSG_INPUT_EVAL              = 'eval';
 var MSG_INPUT_REPLAY_HISTORY    = 'replay_history';
 var MSG_INPUT_GET_USER          = 'get_user';
+var MSG_INPUT_COMPLETION        = 'completion';
 
 // output messages (to the browser)
 var MSG_OUTPUT_NULL             = 'null';
@@ -309,7 +310,7 @@ $(window).resize(set_terminal_width);
 
 // jQuery extensions
 jQuery.fn.extend({
-    // inset some text into a textarea at the cursor position
+    // insert some text into a textarea at the cursor position
     insert_at_caret: function(str) {
         // apply this function to all elements that match the selector
         return this.each(function(i) {
@@ -748,6 +749,15 @@ $(document).ready(function() {
             $("#terminal-input").focus();
     });
 
+    // key up
+    $("#terminal-input").keyup(function(evt) {
+        if (!$("#terminal-input").attr("disabled")) {
+            // whatever the key, we complete the current command:
+            outbox_queue.push({msg:MSG_INPUT_COMPLETION, input:$("#terminal-input").val()});
+            process_outbox();
+        }
+    });
+
     // hook keyboard events for the input field
     $("#terminal-input").keydown(function(evt) {
         // determine which key was pressed
@@ -843,8 +853,6 @@ $(document).ready(function() {
                     
                     waiting_for_message = false;
                 }
-                
-            //return false;
         }
     });
 
