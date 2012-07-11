@@ -7,8 +7,7 @@ On Mac OS X, these can be installed like this (using Homebrew):
 
 ```bash
 $ brew install nodejs
-$ npm install express
-$ npm install stripcolorcodes
+$ npm install express ejs stripcolorcodes
 ```
 
 Then simply deploy this project:
@@ -17,5 +16,13 @@ Then simply deploy this project:
 $ torch-pkg -local deploy
 ```
 
-(note that you have to deploy it locally, as the node packages are
-only available to the current user)
+Note1: you have to deploy webterm locally, as the node packages are
+only available to the current user.
+
+Note2: depending on the version of Node.js, you might have to do
+the NPM thing in the package directory, i.e.:
+
+```bash
+$ cd ~/.torch/usr/share/torch/lua/webterm/
+$ npm install express ejs stripcolorcodes
+```
