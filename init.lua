@@ -29,6 +29,7 @@
 require 'os'
 require 'io'
 require 'sys'
+require 'xlua'
 require 'paths'
 
 webterm = {}
@@ -121,7 +122,6 @@ function webterm.hist(...)
    webterm.show(file)
 end
 
-
 ----------------------------------------------------------------------
 -- Image Inliner
 ----------------------------------------------------------------------
@@ -153,4 +153,13 @@ function webterm.display(...)
    local win = image.display(input, zoom, min, max, legend, w, ox, oy, scaleeach, gui, offscreen, padding, symm, nrow, saturate)
    local img = win:image():toTensor()
    webterm.show(img)
+end
+
+----------------------------------------------------------------------
+-- Xlua Progress bar is dangerous in the term, overload it
+----------------------------------------------------------------------
+function xlua.progress(start,size)
+   if math.fmod(start-1,math.floor(size/25)) == 0 then
+      io.write('==>')
+   end
 end

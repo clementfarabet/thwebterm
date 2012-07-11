@@ -100,6 +100,12 @@ app.post('/', function(req, res) {
         user = args.user;
     }
 
+    // starting a new session for this user:
+    if (!torch.instances[user] || torch.instances[user] == null) {
+        // start new kernel
+        torch.newinstance(user)
+    }
+
     // what's the message?
     if (msg == 'get_user') {
 
@@ -107,12 +113,6 @@ app.post('/', function(req, res) {
         res.send({msg:msg, user:'['+user+']', uid:'-1'});
 
     } else if (msg == 'replay_history') {
-
-        // starting a new session for this user:
-        if (!torch.instances[user] || torch.instances[user] == null) {
-            // start new kernel
-            torch.newinstance(user)
-        }
 
         // ready to go
         res.send({msg:'ready'});
