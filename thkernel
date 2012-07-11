@@ -11,6 +11,7 @@ import 'image'
 import 'gnuplot'
 import ('webterm',true)
 import 'paths'
+import 'fs'
 
 print '[kernel started]'
 

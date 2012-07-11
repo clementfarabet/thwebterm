@@ -107,6 +107,8 @@ function webterm.plot(...)
    end
    webterm.show(file)
 end
+gnuplot._plot = gnuplot.plot
+gnuplot.plot = webterm.plot
 
 ----------------------------------------------------------------------
 -- Hist Inliner
@@ -121,6 +123,8 @@ function webterm.hist(...)
    sys.sleep(0.5)
    webterm.show(file)
 end
+gnuplot._hist = gnuplot.hist
+gnuplot.hist = webterm.hist
 
 ----------------------------------------------------------------------
 -- Image Inliner
@@ -150,16 +154,19 @@ function webterm.display(...)
       {arg='saturate', type='boolean', help='saturate (useful when min/max are lower than actual min/max', default=true}
    )
    offscreen = true
-   local win = image.display(input, zoom, min, max, legend, w, ox, oy, scaleeach, gui, offscreen, padding, symm, nrow, saturate)
+   local win = image._display(input, zoom, min, max, legend, w, ox, oy, scaleeach, gui, offscreen, padding, symm, nrow, saturate)
    local img = win:image():toTensor()
    webterm.show(img)
 end
+image._display = image.display
+image.display = webterm.display
 
 ----------------------------------------------------------------------
 -- Xlua Progress bar is dangerous in the term, overload it
 ----------------------------------------------------------------------
-function xlua.progress(start,size)
-   if math.fmod(start-1,math.floor(size/25)) == 0 then
-      io.write('==>')
+function webterm.progress(start,size)
+   if math.fmod(start-1,math.floor(size/25)) == 0 or start==size then
+      io.write('==> ' .. start .. '/' .. size)
    end
 end
+xlua.progress = webterm.progress

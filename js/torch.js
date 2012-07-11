@@ -70,6 +70,12 @@ function create_layout() {
           <code>display(image)</code></br> \
           <code>plot(vector)</code></br> \
           <code>hist(vector)</code></br> \
+        <p>System:</p> \
+          <code>reset() -- restart kernel</code></br> \
+          <code>who() -- list variables</code></br> \
+          <code>=dir(\'.\') -- list files</code></br> \
+          <code>=cwd() -- get current dir</code></br> \
+          <code>chdir(\'dir\') -- change dir</code></br> \
     '
     )
 
