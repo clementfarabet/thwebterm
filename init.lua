@@ -100,7 +100,7 @@ function webterm.plot(...)
    local fullpath = webterm.root..file
    os.execute('mkdir -p ' .. paths.dirname(fullpath))
    gnuplot.pngfigure(fullpath)
-   gnuplot.plot(...)
+   gnuplot._plot(...)
    gnuplot.plotflush()
    while not paths.filep(fullpath) do
       sys.sleep(0.1)
@@ -109,22 +109,6 @@ function webterm.plot(...)
 end
 gnuplot._plot = gnuplot.plot
 gnuplot.plot = webterm.plot
-
-----------------------------------------------------------------------
--- Hist Inliner
-----------------------------------------------------------------------
-function webterm.hist(...)
-   local file = os.tmpname() .. '.jpg'
-   local fullpath = webterm.root..file
-   os.execute('mkdir -p ' .. paths.dirname(fullpath))
-   gnuplot.pngfigure(fullpath)
-   gnuplot.hist(...)
-   gnuplot.plotflush()
-   sys.sleep(0.5)
-   webterm.show(file)
-end
-gnuplot._hist = gnuplot.hist
-gnuplot.hist = webterm.hist
 
 ----------------------------------------------------------------------
 -- Image Inliner

@@ -65,11 +65,9 @@ function create_layout() {
           <code>help()</code></br> \
           <code>help(func)</code></br> \
           <code>?func</code></br> \
-          <code>who()</code></br> \
         <p>Visualization:</p> \
           <code>display(image)</code></br> \
           <code>plot(vector)</code></br> \
-          <code>hist(vector)</code></br> \
         <p>System:</p> \
           <code>reset() -- restart kernel</code></br> \
           <code>who() -- list variables</code></br> \
