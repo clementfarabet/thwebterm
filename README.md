@@ -141,4 +141,5 @@ TO DO
   in interpretable code blocks, _ala_ Mathematica/IPython.
   * that last point implies that we need more flexible code entries, where we can go
   back and forth to edit the code.
-
+  * ctrl+C: not working yet. It generates a INT signal, but it doesn't seem to
+  do much for now.
