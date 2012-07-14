@@ -95,13 +95,13 @@ In the broswer, you will see a terminal, which provides full history
 and live completion. Completed entries are shown on the left pane, and
 are actual hyperlinks to documentation:
 
-![](https://github.com/clementfarabet/thwebterm/tree/master/img/term1.png)
+![](https://github.com/clementfarabet/thwebterm/raw/master/img/term1.png)
 
 One cool thing about a browser-based terminal is that all the plots
 and renderings you can generate during your session can be transparently
 piped to the console:
 
-![](https://github.com/clementfarabet/thwebterm/tree/master/img/term2.png)
+![](https://github.com/clementfarabet/thwebterm/raw/master/img/term2.png)
 
 The mechanism we use to do this is very simple: the image, or plot, is dumped
 as a png into the root of the Node.js server; and we then simply print a string
