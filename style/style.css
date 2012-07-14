@@ -62,10 +62,12 @@ div#main {
 
 div#left-column {
     width: 189px;
+    height: 100%;
     float: left;
     font-size: 90%;
     padding-left: 20px;
     padding-right: 20px;
+    overflow-y: scroll;
 }
 
 div#left-column ul {
@@ -297,4 +299,16 @@ blockquote:before {
 
 blockquote:after {
     position: absolute;
+}
+
+/* completion */
+.completion {
+    width: 180px;
+    overflow-x: scroll;
+}
+
+#left-column .completion a
+{
+    text-decoration: none;
+    color: #a00;
 }

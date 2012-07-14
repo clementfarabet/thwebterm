@@ -143,8 +143,20 @@ app.post('/', function(req, res) {
     } else if (msg == 'completion') {
 
         // completion request
-        print('==> stdin: ' + input);
+        var completion = 'complete[====['+input+']====]\n'
+        torch.instances[user].stdin.write(completion);
         res.send({msg:'null'});
+
+    } else if (msg == 'kill') {
+
+        // completion request
+        print('<=.=> sending interupt to pid: ' + torch.instances[user].pid);
+        var kill = child.exec('kill',['-2',torch.instances[user].pid]);
+
+        // when kill done, resume client;
+        kill.on('exit', function (code) {
+            res.send({msg:'null'});
+        });
 
     }
 });

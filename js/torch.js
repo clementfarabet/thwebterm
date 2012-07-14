@@ -51,29 +51,27 @@ function create_layout() {
             <li><a href="https://github.com/andresy/torch" target="_blank">Github</a></li> \
             <li><a href="https://github.com/andresy/torch/issues" target="_blank">Issues</a></li> \
             <li><a href="http://groups.google.com/group/torch7" target="_blank">Google Group</a></li> \
-        </ul> \
-        <h2>Tutorials</h2> \
-        <ul> \
-            <li><a href="http://code.cogbits.com/tutorials/0_getstarted/README.html" target="_blank">Getting Started</a></li> \
-            <li><a href="http://code.cogbits.com/tutorials/1_supervised/README.html" target="_blank">Supervised Learning</a></li> \
-            <li><a href="http://code.cogbits.com/tutorials/2_unsupervised/README.html" target="_blank">Unsupervised Learning</a></li> \
+            <li><a href="http://code.cogbits.com/packages" target="_blank">Packages</a></li> \
+            <li><a href="http://code.cogbits.com/wiki" target="_blank">Machine Learning</a></li> \
         </ul> \
         <h2>Color Scheme</h2> \
         <select id="color-scheme-picker"> </select> \
         <h2>Quick Reference</h2> \
         <p>For help, try one of these:</p> \
-          <code>help()</code></br> \
-          <code>help(func)</code></br> \
-          <code>?func</code></br> \
+          <code>help()</code><br/> \
+          <code>help(func)</code><br/> \
+          <code>?func</code><br/> \
         <p>Visualization:</p> \
-          <code>display(image)</code></br> \
-          <code>plot(vector)</code></br> \
+          <code>display(image)</code><br/> \
+          <code>plot(vector)</code><br/> \
         <p>System:</p> \
-          <code>reset() -- restart kernel</code></br> \
-          <code>who() -- list variables</code></br> \
-          <code>=dir(\'.\') -- list files</code></br> \
-          <code>=cwd() -- get current dir</code></br> \
-          <code>chdir(\'dir\') -- change dir</code></br> \
+          <code>reset() -- restart kernel</code><br/> \
+          <code>who() -- list variables</code><br/> \
+          <code>ls([dir]) -- list files in dir</code><br/> \
+          <code>cd(\'dir\') -- change dir</code><br/> \
+        <br/> \
+        <p>Completions:</p> \
+        <div class="completion"></div> \
     '
     )
 
@@ -226,6 +224,7 @@ var MSG_INPUT_EVAL              = 'eval';
 var MSG_INPUT_REPLAY_HISTORY    = 'replay_history';
 var MSG_INPUT_GET_USER          = 'get_user';
 var MSG_INPUT_COMPLETION        = 'completion';
+var MSG_INPUT_KILL              = 'kill';
 
 // output messages (to the browser)
 var MSG_OUTPUT_NULL             = 'null';
@@ -627,11 +626,17 @@ message_handlers[MSG_OUTPUT_EVAL_ERROR] = function(msg) {
 };
 
 message_handlers[MSG_OUTPUT_EVAL_RESULT] = function(msg) {
-    // print the result
-    if ($.trim(msg.output) == "")
+    // text
+    var text = msg.output;
+
+    // nothing to eval, basic print:
+    if (text.match('<script>') || text.match('</script>')) {
+        $("#terminal").append(text);
+    } else if ($.trim(text) == "") {
         add_to_terminal("<br />");
-    else
-        add_to_terminal(msg.output+"<br />");
+    } else {
+        add_to_terminal(text+"<br />");
+    }
 
     // show the prompt
     $("#prompt").show();
@@ -842,8 +847,11 @@ $(document).ready(function() {
             case 67:
                 // C key pressed
                 if (evt.ctrlKey) {
+                    // send kill command
+                    outbox_queue.push({msg:MSG_INPUT_KILL});
+                    process_outbox();
+
                     // ctrl-c to cancel a command
-                    
                     add_to_terminal("<span class=\"color-scheme-error\">Process Killed<span><br /><br />");
                     
                     // show the prompt
