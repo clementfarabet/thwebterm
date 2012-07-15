@@ -1,12 +1,12 @@
 /********************************************************************
  * A list of the current plots!
  ********************************************************************/
-plots = []
+plots = [];
 
 /********************************************************************
  * A list of plotters
  ********************************************************************/
-plotters = {}
+plotters = {};
 
 /********************************************************************
  * Plotter 1: images
@@ -17,11 +17,11 @@ plotters["image"] = function(plot) {
         parent: layout.terminal,
         css: {},
         clss: 'plot'
-    })
-    plots.push(newplot)
+    });
+    plots.push(newplot);
 
     // image
-    $(newplot.id).append('<img src="'+plot.file+'" />')
+    $(newplot.id).append('<img src="'+plot.file+'" />');
 }
 
 /********************************************************************
@@ -41,8 +41,8 @@ plotters["line"] = function(plot) {
         parent: layout.terminal,
         css: {},
         clss: 'plot'
-    })
-    plots.push(newplot)
+    });
+    plots.push(newplot);
 
     // create an SVG canvas and a group to represent the plot area
     var vis = d3.select(newplot.id)
@@ -376,5 +376,5 @@ plotters["adjacency"] = function(plot) {
                                  +'<span class="button" onclick="_g.order(\'name\')">order</span>'
                                  +'<span class="button" onclick="_g.order(\'group\')">group</span>'
                                  +'<span class="button" onclick="_g.order(\'count\')">count</span>'
-                                 +'</br></br>')
+                                 +'</br></br>');
 }

@@ -23,7 +23,10 @@
 -- 
 ----------------------------------------------------------------------
 -- description:
---     webterm - a JS frontend for Torch.
+--     webterm - A JS frontend for Torch.
+--               This package provides all sorts of functions that
+--               are useful in the web terminal. It shouldn't be loaded
+--               in a regular torch environment.
 ----------------------------------------------------------------------
 
 require 'os'
@@ -154,3 +157,67 @@ function webterm.progress(start,size)
    end
 end
 xlua.progress = webterm.progress
+
+----------------------------------------------------------------------
+-- Reset Kernel (just exit, it'll restart by iteself)
+----------------------------------------------------------------------
+function webterm.reset()
+   os.exit()
+end
+
+----------------------------------------------------------------------
+-- Completion
+----------------------------------------------------------------------
+function webterm.complete(input)
+   local m = nil
+   local delims = {'%[','%]','%{','%}','%(','%)',',','=',''}
+   for _,delim in ipairs(delims) do
+      local nm = input:gfind(delim..'(.-)$')()
+      m = m or nm
+      if nm and #nm < #m then
+         m = nm
+      end
+   end
+   if not m or m == '' then
+      return
+   end
+   m = m:gfind('%s*(.*)%s*')()
+   local namespaces = {}
+   local symbol = m
+   local tbl = _G
+   local namespace = ''
+   while true do
+      namespace = m:gfind('(.-)%.')()
+      if not namespace then break end
+      if type(tbl) ~= 'table' then return end
+      tbl = tbl[namespace]
+      table.insert(namespaces, namespace)
+      m = m:gfind('.-%.(.*)')()
+      if not m or m == '' then break end
+   end
+   namespace = namespaces[#namespaces] or ''
+   if type(tbl) == 'table' then
+      local s = ''
+      for k in pairs(tbl) do
+         if namespace ~= '' then
+            k = namespace .. '.' .. k
+         end
+         if k:find('^'..symbol) then
+            s = s .. '<a target="_blank" href="http://www.torch.ch/?do=search&id='.. k .. '">'
+                  .. k .. '</a><br />'
+         end
+      end
+      io.write('<script>$(\'.completion\').html(\''..s..'\');</script>')
+   end
+end
+
+----------------------------------------------------------------------
+-- Execute some javascript
+----------------------------------------------------------------------
+function webterm.js(cmd)
+   if not cmd then
+      print('please provide some javascript to interpret: js("cmd")')
+      return
+   end
+   print('<script>' .. cmd .. '</script>')
+end
