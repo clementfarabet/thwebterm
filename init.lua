@@ -152,7 +152,10 @@ function webterm.display(...)
    offscreen = true
    local win = image._display(input, zoom, min, max, legend, nil, ox, oy, scaleeach, gui, offscreen, padding, symm, nrow, saturate)
    local img = win:image():toTensor()
+   local caption = nil
+   if not w then caption = legend end
    local w = webterm.show(img,w)
+   if caption then print(caption) end
    return w
 end
 image._display = image.display
