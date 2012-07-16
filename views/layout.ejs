@@ -18,6 +18,16 @@
     <script language="javascript" type="text/javascript" src="/js/common.js"></script>
     <script language="javascript" type="text/javascript" src="/js/plot.js"></script>
     <script language="javascript" type="text/javascript" src="/js/torch.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+          displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+          processEscapes: true
+        },
+      });
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML-full"></script>
   </head>
   <body>
     <%- body %>

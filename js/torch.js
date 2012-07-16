@@ -646,6 +646,11 @@ message_handlers[MSG_OUTPUT_EVAL_RESULT] = function(msg) {
 
     // focus the input field
     $("#terminal-input").focus();
+
+    // force math typesetting
+    if (typeof MathJax != "undefined") {
+        MathJax.Hub.Typeset();
+    }
 };
 
 message_handlers[MSG_OUTPUT_GET_USER] = function(msg) {

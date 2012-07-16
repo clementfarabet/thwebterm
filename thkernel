@@ -81,4 +81,5 @@ while true do
          end
       end
    end
+   collectgarbage()
 end

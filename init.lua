@@ -81,18 +81,27 @@ end
 ----------------------------------------------------------------------
 -- General Inliner
 ----------------------------------------------------------------------
-function webterm.show(data)
+function webterm.show(data,id)
    if torch.typename(data) and torch.typename(data):find('torch.*Tensor') and (data:dim() == 2 or data:dim() == 3) then
       local file = os.tmpname() .. '.jpg'
       local fullpath = webterm.root..file
       os.execute('mkdir -p ' .. paths.dirname(fullpath))
       image.save(fullpath, data)
-      print('<img src="'..file..'" />')
+      data = file
    elseif type(data) == 'string' then
-      print('<img src="'..data..'" />')
+      -- all good, is an image
    else
       print('<webterm> cannot inline this kind of data')
+      return nil
    end
+   if not id then
+      id = ''
+      for i = 1,10 do id=id..tostring(torch.random()) end
+      print('<img src="'..data..'" id="'..id..'" />')
+   else
+      webterm.js('$("#'..id..'").attr("src", "'..data..'");')
+   end
+   return id
 end
 
 ----------------------------------------------------------------------
@@ -141,9 +150,10 @@ function webterm.display(...)
       {arg='saturate', type='boolean', help='saturate (useful when min/max are lower than actual min/max', default=true}
    )
    offscreen = true
-   local win = image._display(input, zoom, min, max, legend, w, ox, oy, scaleeach, gui, offscreen, padding, symm, nrow, saturate)
+   local win = image._display(input, zoom, min, max, legend, nil, ox, oy, scaleeach, gui, offscreen, padding, symm, nrow, saturate)
    local img = win:image():toTensor()
-   webterm.show(img)
+   local w = webterm.show(img,w)
+   return w
 end
 image._display = image.display
 image.display = webterm.display
