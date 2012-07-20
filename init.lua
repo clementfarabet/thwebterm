@@ -234,3 +234,39 @@ function webterm.js(cmd)
    end
    print('<script>' .. cmd .. '</script>')
 end
+
+----------------------------------------------------------------------
+-- Run script: supports markdown, via pandoc. Code tags in markdown
+-- file is parsed, and interpreted.
+----------------------------------------------------------------------
+function webterm.run(file)
+   if file:find('.lua') then
+      dofile(file)
+   elseif file:find('.md') or file:find('.to') then
+      local html = sys.execute('pandoc ' .. file)
+      local blocks = {}
+      local next = html:gfind('(.-)<code lua>(.-)</code>')
+      local remainder
+      for text,code,rem in next do
+         table.insert(blocks, {text=text, code=code})
+         remainder = rem
+      end
+      if remainder then
+         table.insert(blocks, {text=remainder})
+      end
+      for _,block in ipairs(blocks) do
+         if block.text then
+            print(block.text)
+         end
+         if block.code then
+            print('<code class="lua">' .. block.code .. '</code>')
+            local ok,err = xpcall(loadstring(block.code), traceback)
+            if not ok then
+               print(err)
+            end
+         end
+      end
+   else
+      print('<run> unknown file format')
+   end
+end

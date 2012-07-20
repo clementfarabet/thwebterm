@@ -44,7 +44,7 @@ import ('webterm',true)
 
 print '[kernel started]'
 
-local function traceback (message)
+function traceback (message)
    local tp = type(message)
    if tp ~= "string" and tp ~= "number" then return message end
    local debug = _G.debug
