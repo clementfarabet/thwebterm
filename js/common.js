@@ -185,11 +185,18 @@ function create_cell_fixed_ratio(params) {
             h = w/ratio;
         }
 
+        // padding
+        var mh = (pheight-h)/2;
+        var mw = (pwidth-w)/2;
+
         // position new cell
-        pos = {position: 'relative', 'width':''+w+'px', 'height':''+h+'px'};
+        pos = {position: 'relative',
+               'width':''+w+'px', 'height':''+h+'px',
+               'margin-top':''+mh+'px',
+               'margin-left':''+mw+'px'};
         for (var k in pos) {
             params.css[k] = pos[k];
-        }
+        };
 
         // change CSS
         $(cell.id).css(params.css);

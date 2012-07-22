@@ -83,7 +83,7 @@ app.configure('production', function(){
 // main get
 app.get('/', function(req, res) {
     // just render html
-    res.render('index', { title: 'Express' })
+    res.render('index', { title: 'Express' });
 });
 
 // main post

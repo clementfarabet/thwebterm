@@ -293,7 +293,6 @@ function webterm.loadplugin(path, exec)
       local js = f:read('*all')
       js = js:gsub('%/%/(.-)\n','/*%1*/')
       js = js:gsub('\n',' ')
-      print(js)
       f:close()
       webterm.js(js)
    else
