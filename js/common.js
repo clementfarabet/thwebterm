@@ -250,6 +250,7 @@ function add_image_to_cell(params) {
     var cell = params.cell;
     var id = params.id; if (!id) {_cell_id_++; id = 'Cell_'+_cell_id_;};
     var clss = params.clss || '';
+    var priority = params.priority;
     var image = params.image || console.log('error: please provide image');
     var css = params.css || {};
 
@@ -261,14 +262,29 @@ function add_image_to_cell(params) {
         pos[k] = css[k];
     }
 
-    // add content
-    $(cell.id).append(
-        '<div style="display:table; width:100%; height:100%"> \
-            <div style="display:table-cell;vertical-align:middle"> \
-                <img class="'+clss+'" id="' + id + '" src="images/'+ image + '"/> \
-            </div> \
-        </div>'
-    );
+    if (priority) {
+        // add empty image
+        $(cell.id).append(
+            '<div style="display:table; width:100%; height:100%"> \
+                <div style="display:table-cell;vertical-align:middle"> \
+                    <img class="'+clss+'" id="' + id + '" /> \
+                </div> \
+            </div>'
+        );
+
+        // queue image with priority
+        image_queue.push_image({priority: priority, dest: id, src: image});
+
+    } else {
+        // add content
+        $(cell.id).append(
+            '<div style="display:table; width:100%; height:100%"> \
+                <div style="display:table-cell;vertical-align:middle"> \
+                    <img class="'+clss+'" id="' + id + '" src="'+ image + '"/> \
+                </div> \
+            </div>'
+        );
+    };
 
     // set style
     $('#'+id).css(pos);

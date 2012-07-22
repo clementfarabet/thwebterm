@@ -67,6 +67,9 @@ function webterm.server(port)
    if sys.OS == 'macos' then
       os.execute('sleep 1 && open http://localhost:' .. port .. '/ &')
    end
+   if not paths.dirp(webterm.root .. '/_global_') then
+      os.execute('ln -s / ' .. webterm.root .. '/_global_')
+   end
    os.execute('cd ' .. webterm.root .. '; '
               .. 'node server.js ' .. port .. ' ' .. currentpath)
 end
@@ -268,5 +271,38 @@ function webterm.run(file)
       end
    else
       print('<run> unknown file format')
+   end
+end
+
+----------------------------------------------------------------------
+-- Load Plugin:
+-- path: a plugin might be a directory of JS files, or a JS file
+-- exec: an optionnal javascript string to be executed once the plugin
+-- is loaded
+----------------------------------------------------------------------
+function webterm.loadplugin(path, exec)
+   if paths.dirp(path) then
+      for f in paths.files(path) do
+         if f:find('%.js$') then
+            webterm.loadplugin(paths.concat(path,f))
+         end
+      end
+   elseif paths.filep(path) and path:find('%.js$') then
+      print('<webterm> loading plugin script @ ' .. path)
+      local f = io.open(path)
+      local js = f:read('*all')
+      js = js:gsub('%/%/(.-)\n','/*%1*/')
+      js = js:gsub('\n',' ')
+      print(js)
+      f:close()
+      webterm.js(js)
+   else
+      print('<webterm> invalid plugin path: ' .. path)
+      error()
+   end
+   if exec then
+      exec = exec:gsub('%/%/(.-)\n','/*%1*/')
+      exec = exec:gsub('\n',' ')
+      js(exec)
    end
 end
