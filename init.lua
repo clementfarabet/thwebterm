@@ -34,6 +34,7 @@ require 'io'
 require 'sys'
 require 'xlua'
 require 'paths'
+require 'image'
 
 webterm = {}
 
