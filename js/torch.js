@@ -115,11 +115,6 @@ $(document).ready(create_layout);
 $(window).resize(set_column_heights);
 
 /********************************************************************
- * Terminal
- ********************************************************************/
-(function() {
-
-/********************************************************************
  * Color Schemes
  ********************************************************************/
 
@@ -244,10 +239,8 @@ var MSG_OUTPUT_GET_USER         = 'get_user';
  * Implementation
  ********************************************************************/
 
-// the user name
+// the user name + id
 var user_name = "t7";
-
-// the user id
 var user_id = "";
 
 // indent string
@@ -259,7 +252,7 @@ var poll_interval = 100;
 // keep track of whether we are waiting for a message (and don't send more if we are)
 var waiting_for_response = false;
 
-// a queue of messages to be sent to the server
+// a queue of messages to be sent to the server (public var as well)
 var outbox_queue = [];
 
 // a queue of messages from the server to be processed
@@ -880,4 +873,11 @@ $(document).ready(function() {
     init_session();
 });
 
-})();
+// public eval function
+function eval_cmd(cmd) {
+    console.log(cmd);
+    console.log(user_name);
+    console.log(user_id);
+    outbox_queue.push({msg:MSG_INPUT_EVAL, user:user_name, uid:user_id, cmd:cmd + '\n'});
+    process_outbox();
+}
