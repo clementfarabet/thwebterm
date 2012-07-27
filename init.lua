@@ -246,6 +246,8 @@ end
 function webterm.run(file)
    if file:find('.lua') then
       dofile(file)
+   elseif paths.filep(file .. '.lua') then
+      dofile(file .. '.lua')
    elseif file:find('.md') or file:find('.to') then
       local html = sys.execute('pandoc ' .. file)
       local blocks = {}
