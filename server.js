@@ -167,13 +167,17 @@ app.post('/', function(req, res) {
 app.post('/upload', function(req, res, next){
     // on completion, move file received
     if (req.complete) {
-        var files = req.files.files[0];
-        var mkdir = child.spawn('mkdir',['-p','uploads'],{cwd:torch.cwd});
+        var files = req.files.files;
+        if (!files[0].path) {
+            files = files[0];
+        }
+        var dir = req.body.dir;
+        var mkdir = child.spawn('mkdir',['-p','uploads/'+dir],{cwd:torch.cwd});
         mkdir.on('exit', function (code) {
             for (i in files) {
                 var image = files[i];
-                print('moving ' + image.path + ' to uploads/' + image.filename);
-                var mv = child.spawn('mv', [image.path,'uploads/'+image.filename], {cwd:torch.cwd});
+                print('moving ' + image.path + ' to ' + image.filename);
+                var mv = child.spawn('mv', [image.path,'uploads/'+dir+'/'+image.filename], {cwd:torch.cwd});
                 mv.on('exit', function(idx) {
                     return function (code) {
                         if (idx == files.length-1) {
