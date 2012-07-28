@@ -8,7 +8,8 @@ var util = require("util"),
     fs = require("fs"),
     child = require('child_process'),
     stream = require('stream'),
-    stripcolors = require('stripcolorcodes');
+    stripcolors = require('stripcolorcodes'),
+    form = require('connect-form');
 
 // shortcuts
 var print = console.log;
@@ -73,6 +74,7 @@ var app = express.createServer(
 
 // configure template engine
 app.configure(function(){
+    form({ keepExtensions: true });
     app.set('views', __dirname + '/views');
     app.set('view engine', 'ejs');
 });
@@ -159,6 +161,29 @@ app.post('/', function(req, res) {
         });
 
     }
+});
+
+// upload requests
+app.post('/upload', function(req, res, next){
+    // on completion, move file received
+    if (req.complete) {
+        var files = req.files.files[0];
+        var mkdir = child.spawn('mkdir',['-p','uploads'],{cwd:torch.cwd});
+        mkdir.on('exit', function (code) {
+            for (i in files) {
+                var image = files[i];
+                print('moving ' + image.path + ' to uploads/' + image.filename);
+                var mv = child.spawn('mv', [image.path,'uploads/'+image.filename], {cwd:torch.cwd});
+                mv.on('exit', function(idx) {
+                    return function (code) {
+                        if (idx == files.length-1) {
+                            res.send('Upload completed, transmitted ' + (files.length) + ' files');
+                        }
+                    };
+                }(i));
+            };
+        });
+    };
 });
 
 // serving  

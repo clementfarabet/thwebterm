@@ -176,6 +176,20 @@ end
 xlua.progress = webterm.progress
 
 ----------------------------------------------------------------------
+-- Add uploader
+----------------------------------------------------------------------
+function webterm.upload()
+   webterm.__uploadid = (webterm.__uploadid or 0) + 1
+   print([[
+      <form id="file_upload_form" method="post" enctype="multipart/form-data" action="/upload" target="upload_target_]]..webterm.__uploadid..[[">
+         <input type="file" name="files[]" multiple/>
+         <input type="submit" value="Upload" />
+      </form>
+      <iframe id="upload_target_]]..webterm.__uploadid..[[" name="upload_target_]]..webterm.__uploadid..[[" src="" style="color:gray;height:50px;"></iframe>
+   ]])
+end
+
+----------------------------------------------------------------------
 -- Reset Kernel (just exit, it'll restart by iteself)
 ----------------------------------------------------------------------
 function webterm.reset()
