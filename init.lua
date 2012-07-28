@@ -57,7 +57,8 @@ end
 ----------------------------------------------------------------------
 -- Server Root
 ----------------------------------------------------------------------
-webterm.root = torch.packageLuaPath('webterm')
+webterm.rootdir = torch.packageLuaPath('webterm')
+webterm.publicdir = '_global_'..paths.cwd()..'/'
 
 ----------------------------------------------------------------------
 -- Server
@@ -68,10 +69,10 @@ function webterm.server(port)
    if sys.OS == 'macos' then
       os.execute('sleep 1 && open http://localhost:' .. port .. '/ &')
    end
-   if not paths.dirp(webterm.root .. '/_global_') then
-      os.execute('ln -s / ' .. webterm.root .. '/_global_')
+   if not paths.dirp(webterm.rootdir .. '/_global_') then
+      os.execute('ln -s / ' .. webterm.rootdir .. '/_global_')
    end
-   os.execute('cd ' .. webterm.root .. '; '
+   os.execute('cd ' .. webterm.rootdir .. '; '
               .. 'node server.js ' .. port .. ' ' .. currentpath)
 end
 
@@ -88,7 +89,7 @@ end
 function webterm.show(data,id)
    if torch.typename(data) and torch.typename(data):find('torch.*Tensor') and (data:dim() == 2 or data:dim() == 3) then
       local file = os.tmpname() .. '.jpg'
-      local fullpath = webterm.root..file
+      local fullpath = webterm.rootdir..file
       os.execute('mkdir -p ' .. paths.dirname(fullpath))
       image.save(fullpath, data)
       data = file
@@ -113,7 +114,7 @@ end
 ----------------------------------------------------------------------
 function webterm.plot(...)
    local file = os.tmpname() .. '.jpg'
-   local fullpath = webterm.root..file
+   local fullpath = webterm.rootdir..file
    os.execute('mkdir -p ' .. paths.dirname(fullpath))
    gnuplot.pngfigure(fullpath)
    gnuplot._plot(...)
