@@ -112,6 +112,13 @@ app.post('/', function(req, res) {
         // send user
         res.send({msg:msg, user:'['+user+']', uid:'-1'});
 
+        // run request?
+        if (args.run) {
+            // run job
+            print('==> running app: ' + args.run);
+            torch.instances[user].stdin.write('run "' + args.run + '"\n');
+        }
+
     } else if (msg == 'replay_history') {
 
         // ready to go
