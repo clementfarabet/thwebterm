@@ -23,14 +23,14 @@ this web terminal:
 
   * NPM: Node's package manager (sometimes comes with Node.js)
 
-  * Three Node.js packages: `ejs`, `stripcolorcodes`, `express` and `connect-forms`
+  * Three Node.js packages: `ejs`, `stripcolorcodes` and `express`
 
 For instance, on MacOS:
 
 ```bash
 $ brew install nodejs
 $ curl http://npmjs.org/install.sh | sh
-$ npm install express ejs stripcolorcodes connect-forms
+$ npm install express ejs stripcolorcodes
 ```
 
 Installation
@@ -59,7 +59,7 @@ the NPM install in the package directory, i.e.:
 
 ```bash
 $ cd ~/.torch/usr/share/torch/lua/webterm/
-$ npm install express ejs stripcolorcodes connect-forms
+$ npm install express ejs stripcolorcodes
 ```
 
 Running it

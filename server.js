@@ -8,8 +8,7 @@ var util = require("util"),
     fs = require("fs"),
     child = require('child_process'),
     stream = require('stream'),
-    stripcolors = require('stripcolorcodes'),
-    form = require('connect-form');
+    stripcolors = require('stripcolorcodes');
 
 // shortcuts
 var print = console.log;
@@ -74,7 +73,6 @@ var app = express.createServer(
 
 // configure template engine
 app.configure(function(){
-    form({ keepExtensions: true });
     app.set('views', __dirname + '/views');
     app.set('view engine', 'ejs');
 });
