@@ -190,16 +190,22 @@ function create_cell_fixed_ratio(params) {
         var mw = (pwidth-w)/2;
 
         // position new cell
+        var css = {};
         var pos = {position: 'relative',
                    'width':''+w+'px', 'height':''+h+'px',
                    'margin-top':''+mh+'px',
-                   'margin-left':''+mw+'px'};
+                   'margin-left':''+mw+'px',
+                   'margin-bottom':''+mh+'px',
+                   'margin-right':''+mw+'px',};
         for (var k in pos) {
-            params.css[k] = pos[k];
+            css[k] = pos[k];
+        };
+        for (var k in params.css) {
+            css[k] = params.css[k];
         };
 
         // change CSS
-        $(cell.id).css(params.css);
+        $(cell.id).css(css);
 
     }
 
@@ -208,7 +214,7 @@ function create_cell_fixed_ratio(params) {
     
     // force resize
     resize();
-    $(parent.id).resize(resize);
+    $(window).resize(resize);
 
     // return new cell
     return cell;
