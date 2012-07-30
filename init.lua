@@ -183,8 +183,8 @@ function webterm.upload()
    webterm.__uploadid = (webterm.__uploadid or 0) + 1
    print([[
       <form id="file_upload_form" method="post" enctype="multipart/form-data" action="/upload" target="upload_target_]]..webterm.__uploadid..[[">
-         files: <input type="file" name="files[]" multiple/>
-         upload to dir: <input type="text" name="dir" value="new"/>
+         files: <input type="file" name="filesToUpload[]" multiple/>
+         upload to dir: <input type="text" name="destDirectory" value="new"/>
          <input type="submit" value="Upload" />
       </form>
       <iframe id="upload_target_]]..webterm.__uploadid..[[" name="upload_target_]]..webterm.__uploadid..[[" src="" style="color:gray;height:50px;"></iframe>

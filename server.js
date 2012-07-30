@@ -170,29 +170,39 @@ app.post('/', function(req, res) {
 
 // upload requests
 app.post('/upload', function(req, res, next){
-    // on completion, move file received
-    if (req.complete) {
-        var files = req.files.files;
+    // receiving file(s)
+    var files;
+    if (req.files.fileToUpload) {
+        files = [req.files.fileToUpload];
+    } else {
+        files = req.files.filesToUpload;
         if (!files[0].path) {
             files = files[0];
         }
-        var dir = req.body.dir;
-        var mkdir = child.spawn('mkdir',['-p','uploads/'+dir],{cwd:torch.cwd});
-        mkdir.on('exit', function (code) {
+    }
+    var dir = req.body.destDirectory;
+    fs.mkdir(path.join(torch.cwd,'uploads',dir), '0777',
+        function() {
             for (i in files) {
                 var image = files[i];
-                print('moving ' + image.path + ' to ' + image.filename);
-                var mv = child.spawn('mv', [image.path,'uploads/'+dir+'/'+image.filename], {cwd:torch.cwd});
-                mv.on('exit', function(idx) {
-                    return function (code) {
-                        if (idx == files.length-1) {
-                            res.send('Upload completed, transmitted ' + (files.length) + ' files');
-                        }
-                    };
-                }(i));
+                var ext = '.jpg';
+                if (image.filename.match('\.png$') || image.filename.match('\.PNG$')) {
+                    ext = '.png';
+                }
+                var dest = path.join(torch.cwd,'uploads',dir,path.basename(image.path)+ext);
+                print('received file, saving to: ' + dest);
+                fs.rename(image.path, dest,
+                    function(idx) {
+                        return function (code) {
+                            if (idx == files.length-1) {
+                                res.send('Upload completed, transmitted ' + (files.length) + ' files');
+                            }
+                        };
+                    }(i)
+                );
             };
-        });
-    };
+        }
+    );
 });
 
 // serving  
