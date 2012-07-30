@@ -49,6 +49,9 @@ function Cell(params) {
     this.hide = function(t) {
         $(this.id).fadeOut(t);
     }
+    this.toggle = function(t) {
+        $(this.id).toggle(t);
+    }
 
     // create new cell
     $(this.parent.id).append('<div class="'+clss+'" id="'+id+'">'+content+'</div>');
