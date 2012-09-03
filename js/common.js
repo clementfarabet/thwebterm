@@ -21,6 +21,7 @@ function Cell(params) {
     // get params
     var parent = params.parent;
     var cell = params.cell;
+    var where = params.where || 'append';
     var id = params.id;
     if (cell) {id = cell.id.replace('#','')};
     if (!id) {_cell_id_++; id = 'Cell_'+_cell_id_;};
@@ -50,11 +51,15 @@ function Cell(params) {
         $(this.id).fadeOut(t);
     }
     this.toggle = function(t) {
-        $(this.id).toggle(t);
+        $(this.id).fadeToggle(t);
     }
 
     // create new cell
-    $(this.parent.id).append('<div class="'+clss+'" id="'+id+'">'+content+'</div>');
+    if (where == 'prepend') {
+        $(this.parent.id).prepend('<div class="'+clss+'" id="'+id+'">'+content+'</div>');
+    } else {
+        $(this.parent.id).append('<div class="'+clss+'" id="'+id+'">'+content+'</div>');
+    };
 
     // update css
     $(this.id).css(css);
@@ -81,10 +86,11 @@ function create_cell_on_a_grid(params) {
     var x = position.x; if (x==null) x = 0;
     var nrows = grid.rows; if (nrows==null) nrows = 1;
     var ncols = grid.cols; if (ncols==null) ncols = 1;
-    var vspace = grid.vspace; if (vspace==null) vspace = 4;
-    var hspace = grid.hspace; if (hspace==null) hspace = 4;
+    var vspace = grid.vspace; if (vspace==null) vspace = 0;
+    var hspace = grid.hspace; if (hspace==null) hspace = 0;
     var height = position.h; if (height==null) height = 1;
     var width = position.w; if (width==null) width = 1;
+    params.css = params.css || {};
 
     // compute offsets
     var widthpadded = 100/ncols;
@@ -131,6 +137,7 @@ function create_cell_in_a_list(params) {
     var hspace = grid.hspace; if (hspace==null) hspace = 4;
     var height = position.h; if (height==null) height = 100;
     var y = position.y; if (y==null) y = 0;
+    params.css = params.css || {};
 
     // compute offsets
     var width = 100 - hspace;
@@ -166,6 +173,7 @@ function create_cell_fixed_ratio(params) {
     var position = params.position || {};
     var ratio = position.ratio || 1;
     var max = position.max || 100;
+    params.css = params.css || {};
 
     // autoresize
     var resize = function() {
@@ -272,8 +280,7 @@ function add_image_to_cell(params) {
 
     // position new cell
     var pos = {position: 'relative', display:'block', 
-           'margin-left': 'auto', 'margin-right': 'auto',
-           'max-height': '70%', 'max-width': '70%'};
+               'margin-left': 'auto', 'margin-right': 'auto'};
     for (var k in css) {
         pos[k] = css[k];
     }
