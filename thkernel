@@ -40,7 +40,7 @@ import 'image'
 import 'gnuplot'
 import 'paths'
 import 'fs'
-import ('webterm',true)
+import('webterm',true)
 
 print '[kernel started]'
 
@@ -60,7 +60,33 @@ io.write = function(w)
    io.flush()
 end
 
+local events = {}
+function addevent(f)
+   table.insert(events,f)
+end
+function runevents()
+   -- copy events (protect)
+   local cevents = {}
+   for i,event in ipairs(events) do
+      table.insert(cevents,event)
+   end
+   -- flush global event list:
+   events = {}
+   -- process all events
+   for i,event in ipairs(cevents) do
+      -- process event:
+      local done = event()
+      -- if event not completed, re-schedule:
+      if not done then table.insert(events, event) end
+   end
+end
+function clearevents()
+   -- clear all events
+   events = {}
+end
+
 while true do
+   runevents()
    io.flush()
    local line = io.read('*line')
    if line then

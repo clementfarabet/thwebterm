@@ -252,6 +252,8 @@ function webterm.js(cmd)
       print('please provide some javascript to interpret: js("cmd")')
       return
    end
+   cmd = cmd:gsub('%s%/%/(.-)\n','/*%1*/')
+   cmd = cmd:gsub('\n',' ')
    print('<script>' .. cmd .. '</script>')
 end
 
@@ -299,28 +301,59 @@ end
 -- exec: an optionnal javascript string to be executed once the plugin
 -- is loaded
 ----------------------------------------------------------------------
-function webterm.loadplugin(path, exec)
-   if paths.dirp(path) then
+function webterm.loadjs(path, exec)
+   if type(path) == 'table' then
+      local files = ''
+      for i,file in ipairs(path) do
+         -- check if css exists:
+         local cssf = file:gsub('%.js$','.css')
+         if cssf and paths.filep( cssf ) then
+            webterm.loadcss(cssf)
+         end
+         -- append js to list:
+         files = files .. '"' .. webterm.publicdir .. file .. '"'
+         if i ~= #path then files = files .. ',' end
+      end
+      webterm.js([[
+          head.js(]] .. files .. [[)
+      ]])
+   elseif paths.dirp(path) then
       for f in paths.files(path) do
          if f:find('%.js$') then
-            webterm.loadplugin(paths.concat(path,f))
+            webterm.loadjs(paths.concat(path,f))
          end
       end
    elseif paths.filep(path) and path:find('%.js$') then
-      print('<webterm> loading plugin script @ ' .. path)
-      local f = io.open(path)
-      local js = f:read('*all')
-      js = js:gsub('%/%/(.-)\n','/*%1*/')
-      js = js:gsub('\n',' ')
-      f:close()
-      webterm.js(js)
+      -- check if css exists:
+      local cssf = path:gsub('%.js$','.css')
+      if cssf and paths.filep( cssf ) then
+         webterm.loadcss(cssf)
+      end
+      -- load JS:
+      webterm.js([[
+         head.js("]]..webterm.publicdir..path..[[");
+      ]])
    else
-      print('<webterm> invalid plugin path: ' .. path)
+      print('<webterm> invalid js path: ' .. path)
       error()
    end
    if exec then
-      exec = exec:gsub('%/%/(.-)\n','/*%1*/')
-      exec = exec:gsub('\n',' ')
       js(exec)
    end
+end
+
+----------------------------------------------------------------------
+-- Load CSS:
+-- path: a CSS file
+----------------------------------------------------------------------
+function webterm.loadcss(cssf)
+   webterm.js([[
+      $("head").append("<link>");
+      var css = $("head").children(":last");
+      css.attr({
+            rel:  "stylesheet",
+            type: "text/css",
+            href: "]].. webterm.publicdir..cssf ..[["
+      });
+   ]])
 end
